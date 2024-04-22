@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 import boto3
-from configuration.aws import s3, ec2  # Updated import path
+from configuration.aws import s3, ec2, ebs, vpc  # Updated import path
 
 app = FastAPI()
 
@@ -13,7 +13,9 @@ session = boto3.Session(
 async def get_aws_configuration(service: str):
     service_map = {
         "s3": s3.audit_s3_buckets,
-        "ec2": ec2.audit_ec2_instances,           # Function from s3 module
+        "ec2": ec2.audit_ec2_instances,
+        "ebs": ebs.audit_ebs_volumes,
+        "vpc": vpc.audit_vpc,
     }
 
     if service not in service_map:
