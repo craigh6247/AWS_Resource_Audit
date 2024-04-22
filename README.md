@@ -1,7 +1,4 @@
-Certainly! Below is a simple `README.md` content that you can use for your project. It includes a brief description of the technology stack and an outline of the folder structure. You can expand on each section based on the specific details and functionalities of your application.
-
-```markdown
-# Project Title
+# AWS Compliance Audit
 
 This a project designed to help with platfrom auidting of services based on AWS Secruity and Best Practices.
 
@@ -59,7 +56,3 @@ After starting the application, you can access the API at `http://127.0.0.1:8000
 ## License
 
 Specify the license under which the project is made available.
-
-```
-
-Make sure to replace the placeholders like "Project Title" with actual data relevant to your project. This `README.md` is written in Markdown, which is widely used on platforms like GitHub, Bitbucket, and GitLab. It provides a clear, concise description of your project and how to navigate and use its structure.
