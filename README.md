@@ -21,9 +21,9 @@ project_root/
         ├── __init__.py # Makes configuration a sub-package within config
         └── aws/
             ├── __init__.py # Makes aws a sub-package within configuration
-            ├── s3.py       # Module for Amazon S3 operations
-            └── ec2.py       # Module for Amazon EC2 operations
+            └── <awsservice>.py       # Module for Amazon service
         └── azure/
+            └── <azureservice>.py # Module for Azure service 
 ```
 
 ### main.py
@@ -50,9 +50,8 @@ This command will start the FastAPI application with hot reloading enabled.
 
 After starting the application, you can access the API at `http://127.0.0.1:8000`. The API endpoints include:
 
-- `/configuration/aws/s3/`: Interacts with Amazon S3.
-- `/configuration/aws/ec2/`: Interacts with Amazon EC2.
+- `/configuration/aws/<servicename>/`: Interacts with aws service api.
 
 ## License
 
-Specify the license under which the project is made available.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details or visit [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
