@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 import boto3
-from configuration.aws import s3, ec2, ebs, vpc  # Updated import path
+from configuration.aws import s3, ec2, ebs, vpc,security_groups ,iam # Updated import path
 
 app = FastAPI()
 
@@ -16,6 +16,8 @@ async def get_aws_configuration(service: str):
         "ec2": ec2.audit_ec2_instances,
         "ebs": ebs.audit_ebs_volumes,
         "vpc": vpc.audit_vpc,
+        "sg": security_groups.audit_security_groups,
+        "iam": iam.audit_iam_practices, 
     }
 
     if service not in service_map:
