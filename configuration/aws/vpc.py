@@ -11,6 +11,7 @@ def audit_vpc(session):
             availability_zones = {subnet['AvailabilityZone'] for subnet in subnets}
 
             vpc_info = {
+                'AccountID' : get_account_id,
                 'VPC ID': vpc_id,
                 'Is Multi-AZ': len(availability_zones) > 1,
                 'Subnets': len(subnets),
@@ -23,7 +24,11 @@ def audit_vpc(session):
         return vpcs_info
     except Exception as e:
         return {'error': str(e)}
-
+def get_account_id():
+    sts_client = session.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+    account_id = caller_identity['Account']
+    return(account_id)
 def get_security_groups(ec2, vpc_id):
     security_groups = ec2.describe_security_groups(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])['SecurityGroups']
     return [{'GroupId': sg['GroupId'], 'GroupName': sg['GroupName']} for sg in security_groups]

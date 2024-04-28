@@ -1,6 +1,12 @@
 import boto3
 from datetime import datetime, timedelta
 
+def get_account_id():
+    sts_client = session.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+    account_id = caller_identity['Account']
+    return(account_id)
+
 def audit_ebs_volumes(session):
     ec2 = session.client('ec2')
     try:
@@ -19,6 +25,7 @@ def audit_ebs_volumes(session):
             data_classification = tags.get('DataClassification', 'Not Classified')
 
             volume_details.append({
+                'AccountID': get_account_id,
                 'VolumeId': volume_id,
                 'Size': volume['Size'],
                 'Encrypted': volume['Encrypted'],

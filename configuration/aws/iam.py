@@ -19,6 +19,11 @@ def audit_iam_practices(session):
 
     except ClientError as e:
         return {'error': str(e)}
+def get_account_id():
+    sts_client = session.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+    account_id = caller_identity['Account']
+    return(account_id)
 
 def audit_roles(iam):
     role_issues = []
@@ -28,6 +33,7 @@ def audit_roles(iam):
         policies = iam.list_attached_role_policies(RoleName=role['RoleName'])['AttachedPolicies']
         if not policies:
             role_issues.append({
+                'AccountID': get_account_id,
                 'RoleName': role['RoleName'],
                 'Issue': 'No attached policies, may not be following least privilege.'
             })
@@ -42,6 +48,7 @@ def audit_users(iam):
         mfa_devices = iam.list_mfa_devices(UserName=user['UserName'])['MFADevices']
         mfa_status = 'Enabled' if mfa_devices else 'Not Enabled'
         user_details.append({
+            'AccountID': get_account_id,
             'UserName': user['UserName'],
             'MFAStatus': mfa_status
         })

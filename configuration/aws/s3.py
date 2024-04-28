@@ -5,6 +5,8 @@ import json
 
 def audit_s3_buckets(session):
     client = session.client('s3')
+    
+
     bucket_details = []
 
     try:
@@ -13,6 +15,7 @@ def audit_s3_buckets(session):
         for bucket in buckets:
             bucket_name = bucket['Name']
             details = {
+                'AccountID': get_account_id,
                 'Name': bucket_name,
                 'CreationDate': bucket['CreationDate'].isoformat(),
                 'BucketPolicy': check_bucket_policy(client, bucket_name),
@@ -25,12 +28,16 @@ def audit_s3_buckets(session):
             bucket_details.append(details)
 
         # Optionally, write details to a file
-        with open('s3_bucket_details.json', 'w') as f:
-            json.dump(bucket_details, f, indent=4)
-
         return bucket_details
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+def get_account_id():
+    sts_client = session.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+    account_id = caller_identity['Account']
+    return(account_id)
+
 
 def check_bucket_policy(client, bucket_name):
     try:

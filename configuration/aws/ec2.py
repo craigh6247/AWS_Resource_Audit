@@ -11,6 +11,7 @@ def audit_ec2_instances(session):
             for instance in reservation['Instances']:
                 instance_id = instance.get('InstanceId')
                 instance_details = {
+                    'AccountID' : get_account_id,
                     'InstanceId': instance_id,
                     'InstanceType': instance.get('InstanceType'),
                     'PublicIpAddress': instance.get('PublicIpAddress', 'N/A'),
@@ -26,6 +27,11 @@ def audit_ec2_instances(session):
     except Exception as e:
         # Log error or handle it as needed
         return str(e)
+def get_account_id():
+    sts_client = session.client('sts')
+    caller_identity = sts_client.get_caller_identity()
+    account_id = caller_identity['Account']
+    return(account_id)
 
 def get_security_group_details(ec2, instance):
     """Retrieve details for all security groups attached to the instance."""
